@@ -1,0 +1,46 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String @id @default(cuid())
+  email       String @unique
+  password    String
+  currentStep Int    @default(1)
+
+  // about me
+  aboutMe String?
+
+  // address
+  street String?
+  city   String?
+  state  String?
+  zip    String?
+
+  // birthday
+  birthdate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OnboardingConfig {
+  id String @id @default(cuid())
+
+  // page number
+  aboutMePage   Int @default(2)
+  addressPage   Int @default(2)
+  birthdatePage Int @default(3)
+
+  // can only store one active at a time
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

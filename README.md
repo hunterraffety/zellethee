@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Custom Onboarding Flow
 
-## Getting Started
+A modern, configurable user onboarding application with customizable form components and admin controls.
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This application provides a complete solution for user onboarding with a wizard-style interface. The admin can customize which components appear on each page of the onboarding flow, allowing for A/B testing and flexible data collection.
+
+## Features
+
+- **Wizard-style onboarding flow** with progress tracking
+- **Customizable component placement** via admin interface
+- **Real-time data updates** and persistence
+- **Modern glassmorphism UI** with responsive design
+- **Form validation** with detailed error feedback
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **State Management**: React Query
+- **Forms**: React Hook Form with Zod validation
+- **Styling**: Tailwind CSS 4
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: Custom email/password with bcrypt
+
+## Project Structure
+
+```
+├── app/
+│   ├── admin/           # Admin configuration interface
+│   ├── api/             # API routes
+│   │   ├── config/      # Configuration endpoints
+│   │   ├── register/    # User registration
+│   │   └── users/       # User data management
+│   ├── components/      # React components
+│   │   ├── FormComponents.tsx  # Reusable form components
+│   │   ├── DataTable.tsx       # User data display
+│   │   ├── WizardForm.tsx      # Main onboarding container
+│   │   └── ...
+│   └── data/            # Data visualization page
+├── lib/                 # Utilities and shared code
+│   ├── api.ts           # API helpers
+│   └── prisma.ts        # Database connection
+└── prisma/              # Database schema
+    ├── schema.prisma    # Prisma schema
+    └── migrations/      # Database migrations
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Core Components
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **WizardForm**: Controls the multi-step flow and progress tracking
+- **FormComponents**: Modular components for data collection (AboutMe, Address, Birthdate)
+- **DataTable**: Displays submitted user data with real-time updates
+- **Admin**: Interface for customizing which components appear on which pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup and Installation
 
-## Learn More
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   yarn install
+   ```
+3. Set up your PostgreSQL database and update the `.env` file with your connection string:
+   ```
+   DATABASE_URL="postgresql://username:password@localhost:5432/onboarding"
+   ```
+4. Run database migrations:
+   ```bash
+   npx prisma migrate dev
+   ```
+5. Start the development server:
+   ```bash
+   yarn run dev
+   ```
+6. Access the application at http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+## Admin Configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Access the admin panel at `/admin` to configure which components appear on which onboarding pages:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Each page must have at least one component
+- Components can be assigned to either Page 2 or Page 3 of the flow
+- Changes take effect immediately for new users
 
-## Deploy on Vercel
+## Development Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- The application uses cookies to track user progress through the onboarding flow
+- Real-time updates in the data table use a polling strategy with React Query
+- Form validation uses Zod schemas for type-safe validation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT
